@@ -2,19 +2,22 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from main import scrape_skyward_final
+from fastapi.staticfiles import StaticFiles
+import os
 
 app = FastAPI()
 
 # --- CORS SETTINGS ---
 # This allows your React app (port 5173) to talk to this Python app (port 8000)
+# In api.py
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"], 
-    allow_credentials=True,
+    allow_origins=["*"],   # Allows all connections (Good for testing)
+    allow_credentials=False, # <--- CHANGE THIS TO FALSE
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 # Define the data we expect from the frontend
 class LoginRequest(BaseModel):
     username: str
@@ -39,3 +42,8 @@ def get_grades(login_data: LoginRequest):
 @app.get("/")
 def home():
     return {"message": "Skyward API is running!"}
+
+if os.path.exists("dist"):
+    app.mount("/", StaticFiles(directory="dist", html=True), name="static")
+else:
+    print("⚠️ Warning: 'dist' folder not found. Frontend will not work.")
