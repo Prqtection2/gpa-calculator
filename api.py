@@ -39,9 +39,9 @@ def get_grades(login_data: LoginRequest):
         print(f"❌ Server Error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.get("/")
-def home():
-    return {"message": "Skyward API is running!"}
+#@app.get("/")
+#def home():
+#    return {"message": "Skyward API is running!"}
 
 if os.path.exists("dist"):
     app.mount("/", StaticFiles(directory="dist", html=True), name="static")

@@ -27,7 +27,7 @@ const App = () => {
     setError("");
 
     try {
-      const response = await fetch('https://345e-50-219-47-18.ngrok-free.app/get-grades', {
+      const response = await fetch('/get-grades', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
