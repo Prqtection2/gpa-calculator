@@ -43,7 +43,19 @@ def get_grades(login_data: LoginRequest):
 #def home():
 #    return {"message": "Skyward API is running!"}
 
-if os.path.exists("dist"):
-    app.mount("/", StaticFiles(directory="dist", html=True), name="static")
+# ... inside api.py ...
+
+# GET THE ABSOLUTE PATH OF WHERE THIS SCRIPT IS
+# This ensures we find 'dist' even if the server starts from a different folder
+import os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DIST_DIR = os.path.join(BASE_DIR, "dist")
+
+if os.path.exists(DIST_DIR):
+    app.mount("/", StaticFiles(directory=DIST_DIR, html=True), name="static")
+    print(f"✅ Frontend mounted successfully from: {DIST_DIR}")
 else:
-    print("⚠️ Warning: 'dist' folder not found. Frontend will not work.")
+    print(f"⚠️ Warning: 'dist' folder not found at: {DIST_DIR}")
+    # OPTIONAL: List what IS in the directory to help debug if it fails again
+    print(f"📂 Current Directory Contents: {os.listdir(BASE_DIR)}")
