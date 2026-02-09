@@ -50,7 +50,7 @@ def get_grades(login_data: LoginRequest):
 import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DIST_DIR = os.path.join(BASE_DIR, "dist")
+DIST_DIR = os.path.join(BASE_DIR, "gpa-dashboard", "dist")
 
 if os.path.exists(DIST_DIR):
     app.mount("/", StaticFiles(directory=DIST_DIR, html=True), name="static")
