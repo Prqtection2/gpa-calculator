@@ -58,7 +58,16 @@ def scrape_skyward_final(username=None, password=None):
         password = creds["skyward_pass"]
 
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True) 
+        browser = browser = p.chromium.launch(
+                                headless=True,
+                                args=[
+                                    "--no-sandbox",              # <--- THE MOST IMPORTANT LINE
+                                    "--disable-setuid-sandbox",  # <--- ALSO CRITICAL
+                                    "--disable-dev-shm-usage",   # <--- Prevents memory crashes in containers
+                                    "--disable-gpu",             # <--- We don't have a screen, so no GPU needed
+                                    "--no-zygote",               # <--- Helps in some container environments
+                                ]
+                            )
         page = browser.new_page()
 
         print("🚀 [1/5] Logging in...")
